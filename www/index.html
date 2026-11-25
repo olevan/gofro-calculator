@@ -4,192 +4,183 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#1e3a8a">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>ГофроКалькулятор Pro — Прайс, BCT, База</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <title>ГофроКалькулятор Pro</title>
     <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #f1f5f9;
-            color: #0f172a;
-            -webkit-tap-highlight-color: transparent;
-            padding-bottom: 88px;
-        }
-
-        select {
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23475569' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.65rem center;
-            background-repeat: no-repeat;
-            background-size: 1.25em 1.25em;
-            padding-right: 2.25rem;
-        }
-
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
             margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+            padding-bottom: 92px;
         }
-        input[type="number"] {
-            -moz-appearance: textfield;
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: linear-gradient(90deg, #0f172a, #172554, #0f172a);
+            color: #fff;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .brand { display: flex; align-items: center; gap: 10px; }
+        .logo {
+            width: 36px; height: 36px; border-radius: 10px;
+            background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(251, 191, 36, 0.5);
+            color: #fbbf24; font-weight: 800; font-size: 14px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .title { font-size: 15px; font-weight: 700; line-height: 1.2; }
+        .subtitle { font-size: 11px; color: #cbd5e1; margin-top: 2px; }
+        .badge {
+            font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px;
+            background: rgba(255,255,255,0.12); color: #bfdbfe;
+        }
+        main { max-width: 760px; margin: 0 auto; padding: 12px; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        .card {
+            background: #fff; border: 1px solid #e2e8f0; border-radius: 16px;
+            overflow: hidden; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .card-head {
+            background: #1e293b; color: #fff; padding: 10px 14px;
+            display: flex; align-items: center; justify-content: space-between;
+            font-size: 12px; font-weight: 700; text-transform: uppercase;
+        }
+        .card-head.orig { background: #1e3a8a; }
+        .card-head.repl { background: #b45309; }
+        .card-head.hero { background: linear-gradient(135deg, #172554, #1e3a8a, #0f172a); padding: 16px; }
+        .card-body { padding: 14px; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid #e2e8f0; background: #f8fafc; }
+        .kpi-cell { padding: 10px 6px; text-align: center; border-right: 1px solid #e2e8f0; }
+        .kpi-cell:last-child { border-right: none; }
+        .kpi-label { font-size: 11px; color: #64748b; }
+        .kpi-val { font-size: 16px; font-weight: 800; margin-top: 2px; }
+        .kpi-sub { font-size: 10px; color: #64748b; margin-top: 2px; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th, td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; }
+        th { text-align: left; color: #64748b; background: #f8fafc; font-weight: 600; }
+        .num { text-align: right; font-variant-numeric: tabular-nums; }
+        .btn-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; background: #f8fafc; }
+        .btn-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        @media (min-width: 600px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+        label { display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px; }
+        select, input[type="number"], input[type="text"] {
+            width: 100%; padding: 10px 12px; border-radius: 12px;
+            border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a;
+            font-size: 14px; font-weight: 600;
+        }
+        select:focus, input:focus { outline: none; border-color: #2563eb; background: #fff; }
+        .btn {
+            border: none; border-radius: 12px; padding: 10px 12px;
+            font-size: 12px; font-weight: 700; cursor: pointer; text-align: center;
+        }
+        .btn-blue { background: #1e3a8a; color: #fff; }
+        .btn-amber { background: #d97706; color: #fff; }
+        .btn-green { background: #dcfce7; color: #14532d; border: 1px solid #86efac; }
+        .btn-light { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; }
+        .btn-rose { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+        .info-strip {
+            margin-top: 10px; padding: 10px 12px; border-radius: 12px;
+            background: #eff6ff; border: 1px solid #dbeafe;
+            display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-size: 12px;
+        }
+        .info-strip.amber { background: #fffbeb; border-color: #fde68a; }
+        .bct-boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .bct-box {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.16);
+            border-radius: 12px; padding: 12px;
+        }
+        .bct-num { font-size: 24px; font-weight: 800; margin-top: 4px; }
+        .db-item {
+            background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+            padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px;
+        }
+        .pill { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: #f1f5f9; color: #334155; }
+        .pill.blue { background: #dbeafe; color: #1e40af; }
+        #bottomNav {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 30;
+            background: #ffffff; border-top: 1px solid #cbd5e1;
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            box-shadow: 0 -4px 14px rgba(0,0,0,0.08);
+        }
+        .nav-tab {
+            background: transparent; border: none; border-top: 3px solid transparent;
+            padding: 12px 4px; font-size: 12px; font-weight: 600; color: #64748b; cursor: pointer;
+        }
+        .nav-tab.active { color: #1e3a8a; font-weight: 800; border-top-color: #1e3a8a; background: #eff6ff; }
+        .modal-bg {
+            position: fixed; inset: 0; z-index: 50; background: rgba(15,23,42,0.65);
+            display: none; align-items: center; justify-content: center; padding: 16px;
+        }
+        .modal-bg.open { display: flex; }
+        .modal-card { background: #fff; border-radius: 18px; width: 100%; max-width: 420px; overflow: hidden; }
+        #toast {
+            position: fixed; top: 64px; left: 50%; transform: translateX(-50%); z-index: 60;
+            background: #0f172a; color: #fff; padding: 8px 14px; border-radius: 10px;
+            font-size: 12px; font-weight: 600; display: none; max-width: 90%; text-align: center;
         }
     </style>
 </head>
-<body class="antialiased selection:bg-blue-200">
+<body>
 
-    <header class="sticky top-0 z-30 bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white shadow-md">
-        <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-            <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 font-extrabold text-sm">
-                    ГК
-                </div>
-                <div>
-                    <h1 class="text-base font-bold leading-tight tracking-tight">ГофроКалькулятор</h1>
-                    <p class="text-[11px] text-slate-300 font-medium" id="headerSubtitle">Розрахунок прайсу та підбір</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-2">
-                <span id="dbCountBadge" class="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-white/10 text-blue-200 border border-white/10">28 марок</span>
-            </div>
+<header>
+    <div class="brand">
+        <div class="logo">ГК</div>
+        <div>
+            <div class="title">ГофроКалькулятор</div>
+            <div class="subtitle" id="headerSubtitle">Розрахунок прайсу та підбір</div>
         </div>
-    </header>
+    </div>
+    <div class="badge" id="dbCountBadge">28 марок</div>
+</header>
 
-    <div id="toastContainer" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-md pointer-events-none flex flex-col gap-2"></div>
+<div id="toast"></div>
 
-    <main class="max-w-3xl mx-auto px-3 sm:px-4 pt-3 space-y-4">
-
-        <!-- ВКЛАДКА 1: ПРАЙС І ЗАМІНА -->
-        <section id="tab-price" class="tab-content active space-y-4">
-
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
-                <div class="bg-slate-800 text-white px-4 py-2.5 flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider">Порівняння: Оригінал vs Заміна</span>
-                    <span id="summaryLayersBadge" class="text-[11px] bg-slate-700 px-2 py-0.5 rounded-md text-slate-200 font-medium">3-шаровий</span>
+<main>
+    <!-- ВКЛАДКА 1: ПРАЙС І ЗАМІНА -->
+    <section id="panel-price" class="tab-panel active">
+        <div class="card">
+            <div class="card-head">
+                <span>Порівняння: Оригінал vs Заміна</span>
+                <span id="summaryLayersBadge">3-шаровий</span>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-cell">
+                    <div class="kpi-label">Економія (лист)</div>
+                    <div class="kpi-val" id="deltaEconSheet">-2.6%</div>
+                    <div class="kpi-sub" id="deltaEconMoney">+0.606 грн/м²</div>
                 </div>
-
-                <div class="grid grid-cols-3 divide-x divide-slate-100 border-b border-slate-100 bg-slate-50/70">
-                    <div class="p-2.5 text-center">
-                        <div class="text-[11px] text-slate-500 font-medium">Економія (лист)</div>
-                        <div id="deltaEconSheet" class="text-base sm:text-lg font-extrabold mt-0.5 text-rose-600">-2.6%</div>
-                        <div id="deltaEconMoney" class="text-[10px] text-slate-500 font-medium">+0.606 грн/м²</div>
-                    </div>
-                    <div class="p-2.5 text-center">
-                        <div class="text-[11px] text-slate-500 font-medium">Різниця ваги</div>
-                        <div id="deltaWeight" class="text-base sm:text-lg font-extrabold text-slate-800 mt-0.5">-66 г/м²</div>
-                        <div id="weightPairText" class="text-[10px] text-slate-500 font-medium">567 → 500</div>
-                    </div>
-                    <div class="p-2.5 text-center">
-                        <div class="text-[11px] text-slate-500 font-medium">Різниця ECT</div>
-                        <div id="deltaEct" class="text-base sm:text-lg font-extrabold mt-0.5 text-amber-600">-0.87</div>
-                        <div id="ectPairText" class="text-[10px] text-slate-500 font-medium">ТК-25 → ТК-24</div>
-                    </div>
+                <div class="kpi-cell">
+                    <div class="kpi-label">Різниця ваги</div>
+                    <div class="kpi-val" id="deltaWeight">-66 г/м²</div>
+                    <div class="kpi-sub" id="weightPairText">567 → 500</div>
                 </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-xs text-left">
-                        <thead>
-                            <tr class="bg-slate-50 text-slate-500 border-b border-slate-200">
-                                <th class="py-2 pl-3 pr-1 font-semibold">Показник (грн/м²)</th>
-                                <th class="py-2 px-2 text-right font-semibold text-blue-900">Оригінал</th>
-                                <th class="py-2 px-2 text-right font-semibold text-amber-800">Заміна</th>
-                                <th class="py-2 pl-1 pr-3 text-right font-semibold">Економія</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            <tr>
-                                <td class="py-2 pl-3 pr-1 font-medium text-slate-700">Собівартість лист</td>
-                                <td id="tblOrigCostSheet" class="py-2 px-2 text-right font-semibold text-slate-800">22.510</td>
-                                <td id="tblReplCostSheet" class="py-2 px-2 text-right font-semibold text-slate-800">23.116</td>
-                                <td id="tblEconSheet" class="py-2 pl-1 pr-3 text-right font-bold text-rose-600">-2.6%</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 pl-3 pr-1 font-medium text-slate-700">Собівартість ящик</td>
-                                <td id="tblOrigCostBox" class="py-2 px-2 text-right font-semibold text-slate-800">24.810</td>
-                                <td id="tblReplCostBox" class="py-2 px-2 text-right font-semibold text-slate-800">25.416</td>
-                                <td id="tblEconBox" class="py-2 pl-1 pr-3 text-right font-bold text-rose-600">-2.4%</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 pl-3 pr-1 font-medium text-slate-700">Собівартість лоток</td>
-                                <td id="tblOrigCostTray" class="py-2 px-2 text-right font-semibold text-slate-800">25.760</td>
-                                <td id="tblReplCostTray" class="py-2 px-2 text-right font-semibold text-slate-800">26.366</td>
-                                <td id="tblEconTray" class="py-2 pl-1 pr-3 text-right font-bold text-rose-600">-2.3%</td>
-                            </tr>
-                            <tr class="bg-blue-50/40">
-                                <td class="py-2 pl-3 pr-1 font-bold text-blue-950">ПРАЙС Лист</td>
-                                <td id="tblOrigPriceSheet" class="py-2 px-2 text-right font-extrabold text-blue-900">25.886</td>
-                                <td id="tblReplPriceSheet" class="py-2 px-2 text-right font-extrabold text-amber-800">26.583</td>
-                                <td id="tblDiffPriceSheet" class="py-2 pl-1 pr-3 text-right font-semibold text-rose-600">+0.697</td>
-                            </tr>
-                            <tr class="bg-blue-50/40">
-                                <td class="py-2 pl-3 pr-1 font-bold text-blue-950">ПРАЙС Ящик</td>
-                                <td id="tblOrigPriceBox" class="py-2 px-2 text-right font-extrabold text-blue-900">28.186</td>
-                                <td id="tblReplPriceBox" class="py-2 px-2 text-right font-extrabold text-amber-800">28.883</td>
-                                <td id="tblDiffPriceBox" class="py-2 pl-1 pr-3 text-right font-semibold text-rose-600">+0.697</td>
-                            </tr>
-                            <tr class="bg-blue-50/40">
-                                <td class="py-2 pl-3 pr-1 font-bold text-blue-950">ПРАЙС Лоток</td>
-                                <td id="tblOrigPriceTray" class="py-2 px-2 text-right font-extrabold text-blue-900">29.136</td>
-                                <td id="tblReplPriceTray" class="py-2 px-2 text-right font-extrabold text-amber-800">29.833</td>
-                                <td id="tblDiffPriceTray" class="py-2 pl-1 pr-3 text-right font-semibold text-rose-600">+0.697</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="p-2.5 bg-slate-50 border-t border-slate-200/80 grid grid-cols-2 gap-2">
-                    <button type="button" onclick="sendToBct('orig')" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-blue-900 hover:bg-blue-800 active:scale-[0.98] text-white text-xs font-semibold shadow-sm transition">
-                        <span>ECT Оригінал → BCT</span>
-                    </button>
-                    <button type="button" onclick="sendToBct('repl')" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 active:scale-[0.98] text-white text-xs font-semibold shadow-sm transition">
-                        <span>ECT Заміна → BCT</span>
-                    </button>
+                <div class="kpi-cell">
+                    <div class="kpi-label">Різниця ECT</div>
+                    <div class="kpi-val" id="deltaEct">-0.87</div>
+                    <div class="kpi-sub" id="ectPairText">ТК-25 → ТК-24</div>
                 </div>
             </div>
-
-            <!-- Картка 1: ОРИГІНАЛ -->
-            <div class="bg-white rounded-2xl shadow-sm border-2 border-blue-900/15 overflow-hidden">
-                <div class="bg-blue-900 text-white px-4 py-2.5 flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-blue-300"></span>
-                        <h2 class="text-sm font-bold tracking-wide uppercase">1. Оригінал</h2>
-                    </div>
-                    <div class="flex items-center gap-2 text-xs">
-                        <span id="origGradeBadge" class="px-2 py-0.5 rounded-md bg-white text-blue-950 font-extrabold">ТК-25</span>
-                        <span id="origEctBadge" class="font-semibold text-blue-100">ECT: 6.13</span>
-                        <span id="origWeightBadge" class="font-semibold text-blue-200">567 г/м²</span>
-                    </div>
-                </div>
-
-                <div class="p-3.5 space-y-2.5">
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-1">L1 (Зовнішній лайнер)</label>
-                            <select id="orig_L1" onchange="recalculateAll()" class="layer-select w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-900 focus:border-blue-600 focus:bg-white focus:outline-none"></select>
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-1">F1 (Флютінг 1)</label>
-                            <select id="orig_F1" onchange="recalculateAll()" class="layer-select w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-900 focus:border-blue-600 focus:bg-white focus:outline-none"></select>
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-1">L2 (Середній / Внутр.)</label>
-                            <select id="orig_L2" onchange="recalculateAll()" class="layer-select w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-900 focus:border-blue-600 focus:bg-white focus:outline-none"></select>
-                        </div>
-                    </div>
-
-                    <div class="pt-1 border-t border-dashed border-slate-200">
-                        <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex items-center justify-between">
-                            <span>Додаткові шари (для 5-шарового картону)</span>
-                            <button type="button" onclick="clear5Layers('orig')" class="text-blue-600 hover:underline font-medium">Зробити 3-шар.</
+            <table>
+                <thead>
+                    <tr>
+                        <th>Показник (грн/м²)</th>
+                        <th class="num">Оригінал</th>
+                        <th class="num">Заміна</th>
+                        <th class="num">Різниця / Екон.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Собівартість лист</td><td class="num" id="tblOrigCostSheet">0</td><td class="num" id="tblReplCostSheet">0</td><td class="num" id="tblEconSheet">0%</td></tr>
+                    <tr><td>Собівартість ящик</td><td class="num" id="tblOrigCostBox">0</td><td class="num" id="tblReplCostBox">0</td><td class="num" id="tblEconBox">0%</td></tr>
+                    <tr><td>Собівартість лоток</td><td class="num" id="tblOrigCostTray">0</td><td class="num" id="tblReplCostTray">0</td><td class="num" id="tblEconTray">0%</td></tr>
+                    <tr><td><strong>ПРАЙС Лист</strong></td><td class="num" id="tblOrigPriceSheet">0</td><td class="num" id="tblReplPriceSheet">0</td><td class="num" id="tblDiffPriceSheet">0</td></tr>
+                    <tr><td><strong>ПРАЙС Ящик</strong></td><td class="num" id="tblOrigPriceBox">0</td><td class="num" id="tblReplPriceBox">0</td><td class="num" id="tblDiffPriceBox">0</td></tr>
+                    <tr><td><strong>ПРАЙС Лоток
