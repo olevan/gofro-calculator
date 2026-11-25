@@ -183,4 +183,731 @@
                     <tr><td>Собівартість лоток</td><td class="num" id="tblOrigCostTray">0</td><td class="num" id="tblReplCostTray">0</td><td class="num" id="tblEconTray">0%</td></tr>
                     <tr><td><strong>ПРАЙС Лист</strong></td><td class="num" id="tblOrigPriceSheet">0</td><td class="num" id="tblReplPriceSheet">0</td><td class="num" id="tblDiffPriceSheet">0</td></tr>
                     <tr><td><strong>ПРАЙС Ящик</strong></td><td class="num" id="tblOrigPriceBox">0</td><td class="num" id="tblReplPriceBox">0</td><td class="num" id="tblDiffPriceBox">0</td></tr>
-                    <tr><td><strong>ПРАЙС Лоток
+                    <tr><td><strong>ПРАЙС Лоток</strong></td><td class="num" id="tblOrigPriceTray">0</td><td class="num" id="tblReplPriceTray">0</td><td class="num" id="tblDiffPriceTray">0</td></tr>
+                </tbody>
+            </table>
+            <div class="btn-row-2">
+                <button type="button" class="btn btn-blue" data-action="to-bct-orig">ECT Оригінал → BCT</button>
+                <button type="button" class="btn btn-amber" data-action="to-bct-repl">ECT Заміна → BCT</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-head orig">
+                <span>1. Оригінал</span>
+                <span><strong id="origGradeBadge">ТК-25</strong> • <span id="origEctBadge">ECT: 6.13</span> • <span id="origWeightBadge">567 г/м²</span></span>
+            </div>
+            <div class="card-body">
+                <div class="grid-3">
+                    <div><label>L1 (Зовнішній лайнер)</label><select id="orig_L1" class="layer-sel"></select></div>
+                    <div><label>F1 (Флютінг 1)</label><select id="orig_F1" class="layer-sel"></select></div>
+                    <div><label>L2 (Середній / Внутр.)</label><select id="orig_L2" class="layer-sel"></select></div>
+                </div>
+                <div style="margin-top:10px; display:flex; justify-content:space-between; font-size:11px; color:#64748b;">
+                    <span>5-шаровий картон (опційно):</span>
+                    <button type="button" data-action="clear5-orig" style="background:none;border:none;color:#1d4ed8;font-weight:700;cursor:pointer;">Зробити 3-шар.</button>
+                </div>
+                <div class="grid-2" style="margin-top:6px;">
+                    <div><label>F2 (Флютінг 2)</label><select id="orig_F2" class="layer-sel opt-sel"></select></div>
+                    <div><label>L3 (Внутр. лайнер)</label><select id="orig_L3" class="layer-sel opt-sel"></select></div>
+                </div>
+                <div class="info-strip">
+                    <span>Сировина (1000 м²): <strong id="origRaw1000">0 грн</strong></span>
+                    <span>Цехові: <strong id="origShopInfo">2.01 грн/м²</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-head repl">
+                <span>2. Заміна (Підбір)</span>
+                <span><strong id="replGradeBadge">ТК-24</strong> • <span id="replEctBadge">ECT: 5.26</span> • <span id="replWeightBadge">500 г/м²</span></span>
+            </div>
+            <div class="card-body">
+                <div style="display:flex; justify-content:flex-end; margin-bottom:8px;">
+                    <button type="button" class="btn btn-light" data-action="copy-orig">Скопіювати склад з Оригіналу</button>
+                </div>
+                <div class="grid-3">
+                    <div><label>L1 (Зовнішній лайнер)</label><select id="repl_L1" class="layer-sel"></select></div>
+                    <div><label>F1 (Флютінг 1)</label><select id="repl_F1" class="layer-sel"></select></div>
+                    <div><label>L2 (Середній / Внутр.)</label><select id="repl_L2" class="layer-sel"></select></div>
+                </div>
+                <div style="margin-top:10px; display:flex; justify-content:space-between; font-size:11px; color:#64748b;">
+                    <span>5-шаровий картон (опційно):</span>
+                    <button type="button" data-action="clear5-repl" style="background:none;border:none;color:#b45309;font-weight:700;cursor:pointer;">Зробити 3-шар.</button>
+                </div>
+                <div class="grid-2" style="margin-top:6px;">
+                    <div><label>F2 (Флютінг 2)</label><select id="repl_F2" class="layer-sel opt-sel"></select></div>
+                    <div><label>L3 (Внутр. лайнер)</label><select id="repl_L3" class="layer-sel opt-sel"></select></div>
+                </div>
+                <div class="info-strip amber">
+                    <span>Сировина (1000 м²): <strong id="replRaw1000">0 грн</strong></span>
+                    <span>Цехові: <strong id="replShopInfo">2.01 грн/м²</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-head" style="background:#334155;">
+                <span>Параметри витрат і маржі</span>
+                <span id="paramsSummaryTag">15% / 15%</span>
+            </div>
+            <div class="card-body">
+                <div class="grid-2">
+                    <div><label>Маржа (%)</label><input type="number" step="0.1" id="paramMargin" class="param-inp"></div>
+                    <div><label>Адмін. витрати (%)</label><input type="number" step="0.1" id="paramAdmin" class="param-inp"></div>
+                    <div><label>Надбавка ящик (грн)</label><input type="number" step="0.01" id="paramBoxAdd" class="param-inp"></div>
+                    <div><label>Надбавка лоток (грн)</label><input type="number" step="0.01" id="paramTrayAdd" class="param-inp"></div>
+                    <div><label>Цехові 3-шар (грн/м²)</label><input type="number" step="0.01" id="paramShop3" class="param-inp"></div>
+                    <div><label>Цехові 5-шар (грн/м²)</label><input type="number" step="0.01" id="paramShop5" class="param-inp"></div>
+                </div>
+                <div style="margin-top:10px; text-align:right;">
+                    <button type="button" class="btn btn-light" data-action="reset-params">Скинути параметри</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ВКЛАДКА 2: РОЗРАХУНОК BCT -->
+    <section id="panel-bct" class="tab-panel">
+        <div class="card">
+            <div class="card-head hero">
+                <span>Опір ящика стисненню (BCT)</span>
+                <span>Метод Маккі</span>
+            </div>
+            <div class="card-body" style="background:#0f172a; color:#fff;">
+                <div class="bct-boxes">
+                    <div class="bct-box">
+                        <div style="font-size:11px; color:#93c5fd;">Зусилля (Н)</div>
+                        <div class="bct-num" id="bctResultN">1 963 Н</div>
+                    </div>
+                    <div class="bct-box" style="background:rgba(245,158,11,0.18);">
+                        <div style="font-size:11px; color:#fcd34d;">Навантаження (кгс)</div>
+                        <div class="bct-num" style="color:#fbbf24;" id="bctResultKgf">200.2 кгс</div>
+                    </div>
+                </div>
+                <div class="grid-3" style="margin-top:12px; text-align:center; font-size:12px;">
+                    <div><span style="color:#94a3b8; font-size:10px; display:block;">Зовн. довжина</span><strong id="bctExtL">396.0 мм</strong></div>
+                    <div><span style="color:#94a3b8; font-size:10px; display:block;">Зовн. ширина</span><strong id="bctExtW">185.0 мм</strong></div>
+                    <div><span style="color:#94a3b8; font-size:10px; display:block;">Периметр Z</span><strong id="bctPerimZ" style="color:#fbbf24;">1162.0 мм</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="grid-3">
+                    <div><label>Довжина L (мм)</label><input type="number" id="bctL" value="388" class="bct-inp"></div>
+                    <div><label>Ширина W (мм)</label><input type="number" id="bctW" value="177" class="bct-inp"></div>
+                    <div><label>Висота H (мм)</label><input type="number" id="bctH" value="173" class="bct-inp"></div>
+                </div>
+                <div class="grid-3" style="margin-top:10px;">
+                    <div>
+                        <label>Профіль</label>
+                        <select id="bctFlute">
+                            <option value="E">E (мікро)</option>
+                            <option value="B">B</option>
+                            <option value="C" selected>C</option>
+                            <option value="BC">BC (5-шар)</option>
+                            <option value="EB">EB (5-шар)</option>
+                        </select>
+                    </div>
+                    <div><label>Товщина P (мм)</label><input type="number" step="0.1" id="bctP" value="4" class="bct-inp"></div>
+                    <div><label>Висота гофри</label><input type="number" step="0.1" id="bctFluteH" value="4" class="bct-inp"></div>
+                </div>
+                <div style="margin-top:12px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:4px;">
+                        <label style="margin:0;">ECT картону (кН/м)</label>
+                        <div style="display:flex; gap:6px;">
+                            <button type="button" class="btn btn-light" data-action="pull-orig">Оригінал (<span id="btnOrigEctVal">6.13</span>)</button>
+                            <button type="button" class="btn btn-light" data-action="pull-repl">Заміна (<span id="btnReplEctVal">5.26</span>)</button>
+                        </div>
+                    </div>
+                    <input type="number" step="0.01" id="bctEct" value="4.9" class="bct-inp">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ВКЛАДКА 3: БАЗА КАРТОНІВ -->
+    <section id="panel-db" class="tab-panel">
+        <div class="card">
+            <div class="card-body">
+                <div style="display:flex; gap:8px; margin-bottom:10px;">
+                    <input type="text" id="dbSearchInput" placeholder="Пошук марки картону...">
+                    <button type="button" class="btn btn-blue" data-action="open-add" style="white-space:nowrap;">+ Додати</button>
+                </div>
+                <div class="btn-row-3">
+                    <button type="button" class="btn btn-green" data-action="export-csv">Експорт CSV</button>
+                    <button type="button" class="btn btn-light" data-action="export-json">Експорт JSON</button>
+                    <label class="btn btn-light" style="margin:0; cursor:pointer;">
+                        <span>Імпорт</span>
+                        <input type="file" id="importFileInput" accept=".json,.csv,.txt" style="display:none;">
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div id="dbListContainer"></div>
+        <div style="text-align:center; margin-top:12px;">
+            <button type="button" class="btn btn-rose" data-action="reset-db">Скинути базу до 28 позицій</button>
+        </div>
+    </section>
+</main>
+
+<nav id="bottomNav">
+    <button type="button" class="nav-tab active" data-tab="price">Прайс і Заміна</button>
+    <button type="button" class="nav-tab" data-tab="bct">Розрахунок BCT</button>
+    <button type="button" class="nav-tab" data-tab="db">База картонів</button>
+</nav>
+
+<div id="paperModal" class="modal-bg">
+    <div class="modal-card">
+        <div class="card-head">
+            <span id="modalTitle">Картон</span>
+            <button type="button" data-action="close-modal" style="background:none;border:none;color:#fff;font-size:16px;font-weight:700;cursor:pointer;">✕</button>
+        </div>
+        <form id="paperForm" class="card-body">
+            <input type="hidden" id="editPaperId">
+            <div style="margin-bottom:10px;"><label>Назва марки *</label><input type="text" id="editPaperName" required></div>
+            <div class="grid-2" style="margin-bottom:10px;">
+                <div><label>Маса (г/м²) *</label><input type="number" step="0.1" id="editPaperMass" required></div>
+                <div><label>SCT (кН/м) *</label><input type="number" step="0.01" id="editPaperSct" required></div>
+            </div>
+            <div style="margin-bottom:10px;"><label>Ціна за тонну (грн/т) *</label><input type="number" step="0.01" id="editPaperPriceTon" required></div>
+            <div class="info-strip" style="margin-bottom:12px;">
+                <span>Ціна за 1 м²:</span>
+                <strong id="modalPreviewPriceM2">0.0000 грн</strong>
+            </div>
+            <div class="btn-row-2" style="padding:0; background:none;">
+                <button type="button" class="btn btn-light" data-action="close-modal">Скасувати</button>
+                <button type="submit" class="btn btn-blue">Зберегти</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+(function () {
+    const DEFAULT_PAPERS = [
+        { id: "p1", name: "Б-НК-80", mass_g: 80, price_ton: 28868.35, sct: 0.6 },
+        { id: "p2", name: "Б-1-90", mass_g: 90, price_ton: 22286.81, sct: 0.8 },
+        { id: "p3", name: "Б-1-100", mass_g: 100, price_ton: 21298.75, sct: 1.2 },
+        { id: "p4", name: "КТ-1-112", mass_g: 112, price_ton: 23346.50, sct: 1.6 },
+        { id: "p5", name: "КТУ-120", mass_g: 120, price_ton: 24190.65, sct: 1.9 },
+        { id: "p6", name: "КТУ-130", mass_g: 130, price_ton: 23484.12, sct: 2.1 },
+        { id: "p7", name: "КТУ-150", mass_g: 150, price_ton: 22617.11, sct: 2.4 },
+        { id: "p8", name: "КТУ-170", mass_g: 170, price_ton: 22463.78, sct: 2.7 },
+        { id: "p9", name: "КТУ-190", mass_g: 190, price_ton: 22247.54, sct: 3.0 },
+        { id: "p10", name: "КТ-1-230", mass_g: 230, price_ton: 20688.51, sct: 3.4 },
+        { id: "p11", name: "КТ-1-255", mass_g: 255, price_ton: 20527.11, sct: 3.8 },
+        { id: "p12", name: "КТ-ВП-130", mass_g: 130, price_ton: 25248.31, sct: 2.0 },
+        { id: "p13", name: "КТ-ВП-170", mass_g: 170, price_ton: 24206.76, sct: 2.6 },
+        { id: "p14", name: "КТ-ВП-190", mass_g: 190, price_ton: 23948.71, sct: 2.9 },
+        { id: "p15", name: "КТ-Н-140", mass_g: 140, price_ton: 36053.39, sct: 2.6 },
+        { id: "p16", name: "КТ-Н-200", mass_g: 200, price_ton: 33377.14, sct: 3.5 },
+        { id: "p17", name: "КТ-Н-420", mass_g: 420, price_ton: 34350.03, sct: 7.0 },
+        { id: "p18", name: "TLW-130", mass_g: 130, price_ton: 32212.73, sct: 1.9 },
+        { id: "p19", name: "TLW-150", mass_g: 150, price_ton: 31009.47, sct: 2.2 },
+        { id: "p20", name: "TLW-190", mass_g: 190, price_ton: 28748.90, sct: 2.9 },
+        { id: "p21", name: "F-LUX-180", mass_g: 180, price_ton: 36210.14, sct: 2.5 },
+        { id: "p22", name: "MM-X-140", mass_g: 140, price_ton: 42120.00, sct: 2.2 },
+        { id: "p23", name: "NPF-400", mass_g: 400, price_ton: 43467.38, sct: 7.0 },
+        { id: "p24", name: "КМ-0-140", mass_g: 140, price_ton: 35530.00, sct: 2.7 },
+        { id: "p25", name: "КМУ-140", mass_g: 140, price_ton: 38000.00, sct: 2.9 },
+        { id: "p26", name: "КТП-150", mass_g: 150, price_ton: 36000.00, sct: 2.4 },
+        { id: "p27", name: "Leipa-125", mass_g: 125, price_ton: 45000.00, sct: 2.0 },
+        { id: "p28", name: "Leipa-150", mass_g: 150, price_ton: 46000.00, sct: 2.1 }
+    ];
+
+    const DEFAULT_PARAMS = { marginPct: 15, adminPct: 15, boxAdd: 2.30, trayAdd: 3.25, shop3: 2.01, shop5: 3.57 };
+    const DEFAULT_SEL = {
+        orig: { L1: "F-LUX-180", F1: "КТУ-150", L2: "TLW-190", F2: "", L3: "" },
+        repl: { L1: "MM-X-140", F1: "TLW-130", L2: "TLW-190", F2: "", L3: "" }
+    };
+
+    const mem = {};
+    function readStore(k) {
+        try { if (window.localStorage) return window.localStorage.getItem(k); } catch (e) {}
+        return Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null;
+    }
+    function writeStore(k, v) {
+        mem[k] = v;
+        try { if (window.localStorage) window.localStorage.setItem(k, v); } catch (e) {}
+    }
+
+    let papers = [];
+    let params = Object.assign({}, DEFAULT_PARAMS);
+    let lastRes = { orig: null, repl: null };
+
+    function toast(msg) {
+        const el = document.getElementById("toast");
+        el.textContent = msg;
+        el.style.display = "block";
+        clearTimeout(toast._t);
+        toast._t = setTimeout(() => { el.style.display = "none"; }, 2200);
+    }
+
+    function round3(n) { return Math.round((n + Number.EPSILON) * 1000) / 1000; }
+
+    function gradeByEct(ect) {
+        if (ect < 2.2) return "ТК-20";
+        if (ect < 3.0) return "ТК-21";
+        if (ect < 3.8) return "ТК-22";
+        if (ect < 4.6) return "ТК-23";
+        if (ect < 5.4) return "ТК-24";
+        if (ect < 6.2) return "ТК-25";
+        if (ect < 7.0) return "ТК-26";
+        return "ТК-27";
+    }
+
+    function getPaper(name) {
+        if (!name) return { mass_g: 0, price_ton: 0, sct: 0, price_m2: 0 };
+        const p = papers.find(x => x.name === name);
+        if (!p) return { mass_g: 0, price_ton: 0, sct: 0, price_m2: 0 };
+        return Object.assign({}, p, { price_m2: (p.mass_g / 1000000) * p.price_ton });
+    }
+
+    function switchTab(tab) {
+        document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+        const target = document.getElementById("panel-" + tab);
+        if (target) target.classList.add("active");
+        document.querySelectorAll(".nav-tab").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+        const titles = {
+            price: "Розрахунок прайсу та підбір",
+            bct: "Опір стисненню (Метод Маккі)",
+            db: "Довідник сировини та цін"
+        };
+        document.getElementById("headerSubtitle").textContent = titles[tab] || "";
+        window.scrollTo(0, 0);
+    }
+
+    function fillSelects() {
+        const ids = ["orig_L1","orig_F1","orig_L2","orig_F2","orig_L3","repl_L1","repl_F1","repl_L2","repl_F2","repl_L3"];
+        const prev = {};
+        ids.forEach(id => { const el = document.getElementById(id); if (el && el.value) prev[id] = el.value; });
+
+        ids.forEach(id => {
+            const sel = document.getElementById(id);
+            if (!sel) return;
+            const optOnly = sel.classList.contains("opt-sel");
+            sel.innerHTML = "";
+            if (optOnly) {
+                const o = document.createElement("option");
+                o.value = ""; o.textContent = "— Немає —";
+                sel.appendChild(o);
+            }
+            papers.forEach(p => {
+                const o = document.createElement("option");
+                o.value = p.name;
+                o.textContent = p.name + " (" + p.mass_g + "г | SCT " + p.sct + ")";
+                sel.appendChild(o);
+            });
+            if (prev[id] !== undefined) sel.value = prev[id];
+        });
+        document.getElementById("dbCountBadge").textContent = papers.length + " марок";
+    }
+
+    function applySavedSelection() {
+        let sel = DEFAULT_SEL;
+        try { const s = JSON.parse(readStore("gofro_sel_v2") || "null"); if (s) sel = s; } catch (e) {}
+        ["orig", "repl"].forEach(prefix => {
+            ["L1", "F1", "L2", "F2", "L3"].forEach(layer => {
+                const el = document.getElementById(prefix + "_" + layer);
+                if (!el) return;
+                const val = (sel[prefix] && sel[prefix][layer]) || "";
+                const ok = Array.from(el.options).some(o => o.value === val);
+                if (ok) el.value = val;
+                else if (!el.classList.contains("opt-sel") && el.options.length > 0) el.selectedIndex = 0;
+                else el.value = "";
+            });
+        });
+    }
+
+    function saveSelection() {
+        writeStore("gofro_sel_v2", JSON.stringify({
+            orig: {
+                L1: document.getElementById("orig_L1").value,
+                F1: document.getElementById("orig_F1").value,
+                L2: document.getElementById("orig_L2").value,
+                F2: document.getElementById("orig_F2").value,
+                L3: document.getElementById("orig_L3").value
+            },
+            repl: {
+                L1: document.getElementById("repl_L1").value,
+                F1: document.getElementById("repl_F1").value,
+                L2: document.getElementById("repl_L2").value,
+                F2: document.getElementById("repl_F2").value,
+                L3: document.getElementById("repl_L3").value
+            }
+        }));
+    }
+
+    function calcSide(prefix) {
+        const L1 = getPaper(document.getElementById(prefix + "_L1").value);
+        const F1 = getPaper(document.getElementById(prefix + "_F1").value);
+        const L2 = getPaper(document.getElementById(prefix + "_L2").value);
+        const f2n = document.getElementById(prefix + "_F2").value;
+        const l3n = document.getElementById(prefix + "_L3").value;
+        const F2 = getPaper(f2n);
+        const L3 = getPaper(l3n);
+
+        const is5 = Boolean(f2n || l3n);
+        const weight = L1.mass_g + L2.mass_g + L3.mass_g + 1.31 * (F1.mass_g + F2.mass_g);
+        const rawEct = 0.45 * (L1.sct + L2.sct + L3.sct + 1.31 * (F1.sct + F2.sct)) + (0.0067 * weight - 1.51);
+        const ect = Math.max(0, Math.round(rawEct * 10000) / 10000);
+        const grade = gradeByEct(ect);
+
+        const raw1000 = (L1.price_m2 + L2.price_m2 + L3.price_m2) * 1047 + (F1.price_m2 + F2.price_m2) * 1480;
+        const shop = is5 ? params.shop5 : params.shop3;
+        const base = (raw1000 / 1000) + shop;
+        const costSheet = round3(base * (1 + params.adminPct / 100));
+        const costBox = round3(costSheet + params.boxAdd);
+        const costTray = round3(costSheet + params.trayAdd);
+
+        const priceSheet = round3(costSheet * (1 + params.marginPct / 100));
+        const priceBox = round3(priceSheet + params.boxAdd);
+        const priceTray = round3(priceSheet + params.trayAdd);
+
+        return { is5, weight, ect, grade, raw1000, shop, costSheet, costBox, costTray, priceSheet, priceBox, priceTray, layers: { L1, F1, L2 } };
+    }
+
+    function recalc() {
+        saveSelection();
+        const orig = calcSide("orig");
+        const repl = calcSide("repl");
+        lastRes = { orig, repl };
+
+        document.getElementById("origGradeBadge").textContent = orig.grade;
+        document.getElementById("origEctBadge").textContent = "ECT: " + orig.ect.toFixed(2);
+        document.getElementById("origWeightBadge").textContent = Math.round(orig.weight) + " г/м²";
+        document.getElementById("origRaw1000").textContent = orig.raw1000.toFixed(2) + " грн";
+        document.getElementById("origShopInfo").textContent = orig.shop.toFixed(2) + " грн/м²";
+
+        document.getElementById("replGradeBadge").textContent = repl.grade;
+        document.getElementById("replEctBadge").textContent = "ECT: " + repl.ect.toFixed(2);
+        document.getElementById("replWeightBadge").textContent = Math.round(repl.weight) + " г/м²";
+        document.getElementById("replRaw1000").textContent = repl.raw1000.toFixed(2) + " грн";
+        document.getElementById("replShopInfo").textContent = repl.shop.toFixed(2) + " грн/м²";
+
+        document.getElementById("summaryLayersBadge").textContent =
+            (orig.is5 === repl.is5) ? (orig.is5 ? "5-шаровий" : "3-шаровий") : ((orig.is5 ? "5-шар" : "3-шар") + " vs " + (repl.is5 ? "5-шар" : "3-шар"));
+
+        const eSheet = repl.costSheet > 0 ? ((orig.costSheet / repl.costSheet) - 1) * 100 : 0;
+        const eBox = repl.costBox > 0 ? ((orig.costBox / repl.costBox) - 1) * 100 : 0;
+        const eTray = repl.costTray > 0 ? ((orig.costTray / repl.costTray) - 1) * 100 : 0;
+        const dMoney = orig.costSheet - repl.costSheet;
+        const dWeight = repl.weight - orig.weight;
+        const dEct = repl.ect - orig.ect;
+
+        const eEl = document.getElementById("deltaEconSheet");
+        eEl.textContent = (eSheet >= 0 ? "+" : "") + eSheet.toFixed(1) + "%";
+        eEl.style.color = eSheet >= 0 ? "#15803d" : "#dc2626";
+
+        document.getElementById("deltaEconMoney").textContent = (dMoney >= 0 ? "-" : "+") + Math.abs(dMoney).toFixed(3) + " грн/м²";
+        document.getElementById("deltaWeight").textContent = (dWeight > 0 ? "+" : "") + Math.round(dWeight) + " г/м²";
+        document.getElementById("weightPairText").textContent = Math.round(orig.weight) + " → " + Math.round(repl.weight);
+        document.getElementById("deltaEct").textContent = (dEct >= 0 ? "+" : "") + dEct.toFixed(2);
+        document.getElementById("ectPairText").textContent = orig.grade + " → " + repl.grade;
+
+        function setEcon(id, pct) {
+            const el = document.getElementById(id);
+            el.textContent = (pct >= 0 ? "+" : "") + pct.toFixed(1) + "%";
+            el.style.color = pct >= 0 ? "#15803d" : "#dc2626";
+            el.style.fontWeight = "700";
+        }
+        function setDiff(id, diff) {
+            const el = document.getElementById(id);
+            el.textContent = (diff > 0 ? "+" : "") + diff.toFixed(3);
+            el.style.color = diff <= 0 ? "#15803d" : "#dc2626";
+            el.style.fontWeight = "700";
+        }
+
+        document.getElementById("tblOrigCostSheet").textContent = orig.costSheet.toFixed(3);
+        document.getElementById("tblReplCostSheet").textContent = repl.costSheet.toFixed(3);
+        setEcon("tblEconSheet", eSheet);
+
+        document.getElementById("tblOrigCostBox").textContent = orig.costBox.toFixed(3);
+        document.getElementById("tblReplCostBox").textContent = repl.costBox.toFixed(3);
+        setEcon("tblEconBox", eBox);
+
+        document.getElementById("tblOrigCostTray").textContent = orig.costTray.toFixed(3);
+        document.getElementById("tblReplCostTray").textContent = repl.costTray.toFixed(3);
+        setEcon("tblEconTray", eTray);
+
+        document.getElementById("tblOrigPriceSheet").textContent = orig.priceSheet.toFixed(3);
+        document.getElementById("tblReplPriceSheet").textContent = repl.priceSheet.toFixed(3);
+        setDiff("tblDiffPriceSheet", repl.priceSheet - orig.priceSheet);
+
+        document.getElementById("tblOrigPriceBox").textContent = orig.priceBox.toFixed(3);
+        document.getElementById("tblReplPriceBox").textContent = repl.priceBox.toFixed(3);
+        setDiff("tblDiffPriceBox", repl.priceBox - orig.priceBox);
+
+        document.getElementById("tblOrigPriceTray").textContent = orig.priceTray.toFixed(3);
+        document.getElementById("tblReplPriceTray").textContent = repl.priceTray.toFixed(3);
+        setDiff("tblDiffPriceTray", repl.priceTray - orig.priceTray);
+
+        document.getElementById("btnOrigEctVal").textContent = orig.ect.toFixed(2);
+        document.getElementById("btnReplEctVal").textContent = repl.ect.toFixed(2);
+    }
+
+    function calcBct() {
+        const L = parseFloat(document.getElementById("bctL").value) || 0;
+        const W = parseFloat(document.getElementById("bctW").value) || 0;
+        const P = parseFloat(document.getElementById("bctP").value) || 0;
+        const ect = parseFloat(document.getElementById("bctEct").value) || 0;
+        const extL = L + 2 * P;
+        const extW = W + 2 * P;
+        const Z = 2 * (extL + extW);
+        const bctN = 5.876 * ect * Math.sqrt(Math.max(0, P * Z));
+        const bctKgf = bctN / 9.80665;
+        document.getElementById("bctExtL").textContent = extL.toFixed(1) + " мм";
+        document.getElementById("bctExtW").textContent = extW.toFixed(1) + " мм";
+        document.getElementById("bctPerimZ").textContent = Z.toFixed(1) + " мм";
+        document.getElementById("bctResultN").textContent = Math.round(bctN) + " Н";
+        document.getElementById("bctResultKgf").textContent = bctKgf.toFixed(1) + " кгс";
+    }
+
+    function pullEct(side) {
+        const d = lastRes[side];
+        if (!d) return;
+        document.getElementById("bctEct").value = d.ect.toFixed(2);
+        calcBct();
+        toast("ECT передано в BCT");
+    }
+
+    function renderDb() {
+        const q = (document.getElementById("dbSearchInput").value || "").trim().toLowerCase();
+        const box = document.getElementById("dbListContainer");
+        box.innerHTML = "";
+        const list = papers.filter(p => p.name.toLowerCase().includes(q));
+        list.forEach(p => {
+            const m2 = ((p.mass_g / 1000000) * p.price_ton).toFixed(4);
+            const row = document.createElement("div");
+            row.className = "db-item";
+            row.innerHTML =
+                "<div>" +
+                    "<div style='font-weight:800;font-size:14px;'>" + p.name + " <span class='pill'>" + p.mass_g + " г/м²</span> <span class='pill blue'>SCT " + p.sct + "</span></div>" +
+                    "<div style='font-size:12px;color:#64748b;margin-top:4px;'>Ціна/т: <strong style='color:#0f172a;'>" + p.price_ton.toFixed(2) + " грн</strong> • 1 м²: <strong style='color:#15803d;'>" + m2 + " грн</strong></div>" +
+                "</div>" +
+                "<div style='display:flex;gap:6px;'>" +
+                    "<button type='button' class='btn btn-light' data-edit='" + p.id + "'>Зм.</button>" +
+                    "<button type='button' class='btn btn-rose' data-del='" + p.id + "'>✕</button>" +
+                "</div>";
+            box.appendChild(row);
+        });
+    }
+
+    function openModal(id) {
+        const m = document.getElementById("paperModal");
+        if (id) {
+            const p = papers.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById("modalTitle").textContent = "Редагувати картон";
+            document.getElementById("editPaperId").value = p.id;
+            document.getElementById("editPaperName").value = p.name;
+            document.getElementById("editPaperMass").value = p.mass_g;
+            document.getElementById("editPaperSct").value = p.sct;
+            document.getElementById("editPaperPriceTon").value = p.price_ton;
+        } else {
+            document.getElementById("modalTitle").textContent = "Новий картон";
+            document.getElementById("editPaperId").value = "";
+            document.getElementById("editPaperName").value = "";
+            document.getElementById("editPaperMass").value = "";
+            document.getElementById("editPaperSct").value = "";
+            document.getElementById("editPaperPriceTon").value = "";
+        }
+        updateModalM2();
+        m.classList.add("open");
+    }
+
+    function closeModal() {
+        document.getElementById("paperModal").classList.remove("open");
+    }
+
+    function updateModalM2() {
+        const mass = parseFloat(document.getElementById("editPaperMass").value) || 0;
+        const ton = parseFloat(document.getElementById("editPaperPriceTon").value) || 0;
+        document.getElementById("modalPreviewPriceM2").textContent = ((mass / 1000000) * ton).toFixed(4) + " грн";
+    }
+
+    function savePapers() {
+        writeStore("gofro_papers_v2", JSON.stringify(papers));
+        document.getElementById("dbCountBadge").textContent = papers.length + " марок";
+    }
+
+    function downloadText(content, filename, type) {
+        const blob = new Blob([content], { type: type });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    // Делегування подій
+    document.addEventListener("click", function (e) {
+        const tabBtn = e.target.closest(".nav-tab");
+        if (tabBtn) { switchTab(tabBtn.dataset.tab); return; }
+
+        const editBtn = e.target.closest("[data-edit]");
+        if (editBtn) { openModal(editBtn.dataset.edit); return; }
+
+        const delBtn = e.target.closest("[data-del]");
+        if (delBtn && papers.length > 1) {
+            papers = papers.filter(x => x.id !== delBtn.dataset.del);
+            savePapers(); fillSelects(); recalc(); renderDb(); toast("Видалено"); return;
+        }
+
+        const actBtn = e.target.closest("[data-action]");
+        if (!actBtn) return;
+        const act = actBtn.dataset.action;
+
+        if (act === "to-bct-orig") { pullEct("orig"); switchTab("bct"); }
+        else if (act === "to-bct-repl") { pullEct("repl"); switchTab("bct"); }
+        else if (act === "pull-orig") { pullEct("orig"); }
+        else if (act === "pull-repl") { pullEct("repl"); }
+        else if (act === "clear5-orig") { document.getElementById("orig_F2").value = ""; document.getElementById("orig_L3").value = ""; recalc(); }
+        else if (act === "clear5-repl") { document.getElementById("repl_F2").value = ""; document.getElementById("repl_L3").value = ""; recalc(); }
+        else if (act === "copy-orig") {
+            ["L1","F1","L2","F2","L3"].forEach(l => { document.getElementById("repl_" + l).value = document.getElementById("orig_" + l).value; });
+            recalc(); toast("Скопійовано");
+        } else if (act === "reset-params") {
+            params = Object.assign({}, DEFAULT_PARAMS);
+            writeStore("gofro_params_v2", JSON.stringify(params));
+            syncParamsInputs(); recalc(); toast("Параметри скинуто");
+        } else if (act === "open-add") { openModal(null); }
+        else if (act === "close-modal") { closeModal(); }
+        else if (act === "reset-db") {
+            papers = JSON.parse(JSON.stringify(DEFAULT_PAPERS));
+            savePapers(); fillSelects(); applySavedSelection(); recalc(); renderDb(); toast("Базу відновлено");
+        } else if (act === "export-json") {
+            downloadText(JSON.stringify(papers, null, 2), "baza_kartoniv.json", "application/json");
+        } else if (act === "export-csv") {
+            const rows = ["Марка;Маса (г);Ціна/т (грн);1 м2 (грн);SCT"].concat(
+                papers.map(p => p.name + ";" + p.mass_g + ";" + p.price_ton + ";" + ((p.mass_g / 1000000) * p.price_ton).toFixed(4) + ";" + p.sct)
+            );
+            downloadText("\uFEFF" + rows.join("\r\n"), "baza_kartoniv.csv", "text/csv;charset=utf-8;");
+        }
+    });
+
+    document.addEventListener("change", function (e) {
+        if (e.target.classList.contains("layer-sel")) recalc();
+        else if (e.target.id === "bctFlute") {
+            const presets = { E: 1.5, B: 3, C: 4, BC: 7, EB: 4.5 };
+            const v = presets[e.target.value] || 4;
+            document.getElementById("bctP").value = v;
+            document.getElementById("bctFluteH").value = v;
+            calcBct();
+        } else if (e.target.id === "importFileInput" && e.target.files[0]) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function (ev) {
+                try {
+                    const txt = ev.target.result;
+                    if (file.name.toLowerCase().endsWith(".json")) {
+                        const arr = JSON.parse(txt);
+                        if (Array.isArray(arr) && arr.length) {
+                            papers = arr.map((x, i) => ({
+                                id: x.id || "imp_" + Date.now() + "_" + i,
+                                name: String(x.name || "").trim(),
+                                mass_g: parseFloat(x.mass_g),
+                                price_ton: parseFloat(x.price_ton),
+                                sct: parseFloat(x.sct)
+                            })).filter(x => x.name && !isNaN(x.mass_g) && !isNaN(x.price_ton) && !isNaN(x.sct));
+                        }
+                    } else {
+                        const lines = txt.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+                        const parsed = [];
+                        lines.forEach((line, i) => {
+                            if (i === 0 && (line.toLowerCase().includes("марка") || line.toLowerCase().includes("name"))) return;
+                            const sep = line.includes(";") ? ";" : ",";
+                            const c = line.split(sep).map(s => s.trim().replace(/^"|"$/g, ""));
+                            if (c.length >= 4) {
+                                const name = c[0];
+                                const mass_g = parseFloat(c[1].replace(",", "."));
+                                const price_ton = parseFloat(c[2].replace(",", "."));
+                                const sct = parseFloat((c[4] || c[3]).replace(",", "."));
+                                if (name && !isNaN(mass_g) && !isNaN(price_ton) && !isNaN(sct)) {
+                                    parsed.push({ id: "csv_" + Date.now() + "_" + i, name, mass_g, price_ton, sct });
+                                }
+                            }
+                        });
+                        if (parsed.length) papers = parsed;
+                    }
+                    savePapers(); fillSelects(); recalc(); renderDb(); toast("Імпортовано: " + papers.length);
+                } catch (err) { toast("Помилка імпорту"); }
+                e.target.value = "";
+            };
+            reader.readAsText(file, "UTF-8");
+        }
+    });
+
+    document.addEventListener("input", function (e) {
+        if (e.target.classList.contains("param-inp")) {
+            params.marginPct = parseFloat(document.getElementById("paramMargin").value) || 0;
+            params.adminPct = parseFloat(document.getElementById("paramAdmin").value) || 0;
+            params.boxAdd = parseFloat(document.getElementById("paramBoxAdd").value) || 0;
+            params.trayAdd = parseFloat(document.getElementById("paramTrayAdd").value) || 0;
+            params.shop3 = parseFloat(document.getElementById("paramShop3").value) || 0;
+            params.shop5 = parseFloat(document.getElementById("paramShop5").value) || 0;
+            writeStore("gofro_params_v2", JSON.stringify(params));
+            document.getElementById("paramsSummaryTag").textContent = params.marginPct + "% / " + params.adminPct + "%";
+            recalc();
+        } else if (e.target.classList.contains("bct-inp")) {
+            calcBct();
+        } else if (e.target.id === "dbSearchInput") {
+            renderDb();
+        } else if (e.target.id === "editPaperMass" || e.target.id === "editPaperPriceTon") {
+            updateModalM2();
+        }
+    });
+
+    document.getElementById("paperForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const id = document.getElementById("editPaperId").value;
+        const name = document.getElementById("editPaperName").value.trim();
+        const mass_g = parseFloat(document.getElementById("editPaperMass").value);
+        const sct = parseFloat(document.getElementById("editPaperSct").value);
+        const price_ton = parseFloat(document.getElementById("editPaperPriceTon").value);
+        if (!name || isNaN(mass_g) || isNaN(sct) || isNaN(price_ton)) return;
+
+        if (id) {
+            const idx = papers.findIndex(x => x.id === id);
+            if (idx !== -1) papers[idx] = { id, name, mass_g, price_ton, sct };
+        } else {
+            papers.push({ id: "p_" + Date.now(), name, mass_g, price_ton, sct });
+        }
+        savePapers(); fillSelects(); recalc(); renderDb(); closeModal(); toast("Збережено");
+    });
+
+    function syncParamsInputs() {
+        document.getElementById("paramMargin").value = params.marginPct;
+        document.getElementById("paramAdmin").value = params.adminPct;
+        document.getElementById("paramBoxAdd").value = params.boxAdd;
+        document.getElementById("paramTrayAdd").value = params.trayAdd;
+        document.getElementById("paramShop3").value = params.shop3;
+        document.getElementById("paramShop5").value = params.shop5;
+        document.getElementById("paramsSummaryTag").textContent = params.marginPct + "% / " + params.adminPct + "%";
+    }
+
+    try {
+        const sp = JSON.parse(readStore("gofro_papers_v2") || "null");
+        papers = (Array.isArray(sp) && sp.length) ? sp : JSON.parse(JSON.stringify(DEFAULT_PAPERS));
+    } catch (e) { papers = JSON.parse(JSON.stringify(DEFAULT_PAPERS)); }
+
+    try {
+        const st = JSON.parse(readStore("gofro_params_v2") || "null");
+        if (st) params = Object.assign({}, DEFAULT_PARAMS, st);
+    } catch (e) {}
+
+    syncParamsInputs();
+    fillSelects();
+    applySavedSelection();
+    recalc();
+    calcBct();
+    renderDb();
+})();
+</script>
+</body>
+</html>
