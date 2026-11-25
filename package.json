@@ -1,0 +1,8 @@
+{
+  "appId": "com.gofro.calculator",
+  "appName": "ГофроКалькулятор",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}
